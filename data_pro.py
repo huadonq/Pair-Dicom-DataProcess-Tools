@@ -297,13 +297,5 @@ class DicomData(object):
                                     os.path.join(save_path, TYPE + '_' + str(index) + '_' + mode + '_'+'.png')
         )
 
-
-
-if __name__=='__main__':
-    path = '/zhaojihuai/xiehe_multi_data/bz'
-    save_path = '/zhaojihuai/xiehe_multi_data/hello'
-    data = DicomData(path, save_path)
-    data.un_tar_file(path)
-    data.sitk_resampleSpacing(path)
   
     
