@@ -51,15 +51,17 @@ class SplitData(object):
         file_name, patient_id = self.get_save_str(path)
         if file_name.split('.')[1] in self.img_hz:
             self.mkdir(os.path.join(self.save_path, TYPE, 'images'))
-            shutil.copy(path, os.path.join(self.save_path, TYPE, 'images', patient_id + '_' +file_name))
+            shutil.copy(path, os.path.join(self.save_path, TYPE, 'images', patient_id[:8] + '_' +file_name))
         elif 'txt' in file_name:
             self.mkdir(os.path.join(self.save_path, TYPE, 'labels'))
-            shutil.copy(path, os.path.join(self.save_path, TYPE, 'labels', patient_id + '_' +file_name))
+            shutil.copy(path, os.path.join(self.save_path, TYPE, 'labels', patient_id[:8] + '_' +file_name))
 
 
     def save_train_val(self, path_list, TYPE):
         for patient in path_list:
             self.get_leaf_file(patient,TYPE)
+
+
 
 
         

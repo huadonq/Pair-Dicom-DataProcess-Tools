@@ -12,6 +12,7 @@ class DicomData(object):
         self.file_names = []
         self.dir_names = []
         self.have_processed = []
+        self.annotations_dict = dict()
 
     def __getitem__(self, idx):
         pass
@@ -241,14 +242,22 @@ class DicomData(object):
                     x1,y1 = Frame['p1'][0] ,Frame['p1'][2] 
                     x2,y2 = Frame['p2'][0] ,Frame['p2'][2] 
 
-            bbox_w, bbox_h = (x2 - x1) / w, (y2 - y1) / h
+            bbox_w, bbox_h = abs(x2 - x1) / w, abs(y2 - y1) / h
             bbox_cx, bbox_cy = ((x2 + x1) / 2) / w, ((y2 + y1) / 2) / h
             imgcls = 0
 
             save_path = os.path.join(save_path, TYPE + '_' + str(imgslice) + '_' + strtype + '_' + '.txt')
-            
+            if save_path not in self.annotations_dict.keys():
+                self.annotations_dict[save_path] = []
+                self.annotations_dict[save_path].append([str(imgslice), str(bbox_cx)[:8], str(bbox_cy)[:8], str(bbox_w)[:8], str(bbox_h)[:8]])
+                
+            else:
+                if [str(imgslice), str(bbox_cx)[:8], str(bbox_cy)[:8], str(bbox_w)[:8], str(bbox_h)[:8]] in self.annotations_dict[save_path]:
+                    # print(self.annotations_dict[save_path])
+                    return
+           
             with open(save_path, 'a+') as file:
-                file.write(str(imgcls))
+                file.wri    te(str(imgcls))
                 file.write(' ')
                 file.write(str(bbox_cx))
                 file.write(' ')
